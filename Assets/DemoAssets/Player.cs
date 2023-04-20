@@ -9,17 +9,22 @@ public class Player : MonoBehaviour
     [SerializeField] private float jumpForce = 100f;
     [SerializeField] float groundCheckDistance = 0.1f;
     private Rigidbody rb;
+    private Vector3 move;
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
     }
 
+    private void Update()
+    {
+        move = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+    }
+
     private void FixedUpdate()
     {
-        Vector3 move = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+        rb.AddForce(move * moveSpeed);
         if (isOnGround)
         {
-            rb.AddForce(move * moveSpeed);
             if (Input.GetAxis("Jump") > 0)
             {
                 rb.AddForce(transform.up * jumpForce);
