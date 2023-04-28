@@ -36,4 +36,10 @@ public class Mover : MonoBehaviour
         _rb.AddForce(_horizontal);
         _rb.AddForce(_vertical);
     }
+
+    public void Reverse()
+    {
+        _horizontalForce = -_horizontalForce;
+        _verticalFoce = -_verticalFoce;
+    }
 }

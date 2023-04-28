@@ -6,10 +6,12 @@ using UnityEngine;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 5f;
-    [SerializeField] private float jumpForce = 100f;
-    [SerializeField] float groundCheckDistance = 0.1f;
+    [SerializeField] private float jumpForce = 10f;
+    [SerializeField] private float skinWidth = 0.1f;
+    [SerializeField] private LayerMask layerMask;
+
     private Rigidbody rb;
-    private Vector3 move;
+
     private void Start()
     {
         rb = GetComponent<Rigidbody>();
@@ -17,27 +19,33 @@ public class Player : MonoBehaviour
 
     private void Update()
     {
-        move = new Vector3(Input.GetAxis("Horizontal"), 0, 0);
+        if (CheckGrounded() && Input.GetButtonDown("Jump"))
+        {
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+        }
     }
 
     private void FixedUpdate()
     {
-        rb.AddForce(move * moveSpeed);
-        if (isOnGround)
+        if (CheckGrounded())
         {
-            if (Input.GetAxis("Jump") > 0)
-            {
-                rb.AddForce(transform.up * jumpForce);
-                rb.angularVelocity = Vector3.zero;
-            }
+            float moveInput = Input.GetAxis("Horizontal");
+            rb.velocity = new Vector3(moveInput * moveSpeed, rb.velocity.y, 0f);
         }
     }
 
-    private bool isOnGround
+    private bool CheckGrounded()
     {
-        get
-        {
-            return Physics.Raycast(transform.position, Vector3.down, out RaycastHit hit, groundCheckDistance);
-        }
+        Vector3 boxSize = new Vector3(transform.localScale.x * GetComponent<BoxCollider>().size.x - skinWidth * 2f,
+                                       skinWidth * 2f,
+                                       transform.localScale.z * GetComponent<BoxCollider>().size.z - skinWidth * 2f);
+        Vector3 boxCenter = transform.position - Vector3.up * (GetComponent<BoxCollider>().size.y / 2f - skinWidth);
+        float maxDistance = 0.1f;
+        bool hitGround = Physics.BoxCast(boxCenter, boxSize / 2f, -Vector3.up, out RaycastHit hitInfo, Quaternion.identity, maxDistance, layerMask, QueryTriggerInteraction.Ignore);
+        Vector3 rayOrigin = transform.position - Vector3.up * (GetComponent<BoxCollider>().size.y / 2f - skinWidth);
+        float rayDistance = skinWidth * 2f;
+        hitGround |= Physics.Raycast(rayOrigin, -Vector3.up, rayDistance, layerMask, QueryTriggerInteraction.Ignore);
+
+        return hitGround;
     }
 }

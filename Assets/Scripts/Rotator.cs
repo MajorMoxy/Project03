@@ -5,19 +5,16 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class Rotator : MonoBehaviour
 {
-    private Rigidbody _rb;
-    [SerializeField] private float _rotationSpeed;
+    [SerializeField] private float rotationSpeed;
     [SerializeField] private bool _enabled;
-    private Vector3 _rotation;
-
+    private Rigidbody rb;
     public bool Enabled { get => _enabled; set => _enabled = value; }
-
-    private void Start()
+    void Start()
     {
-        _rb = GetComponent<Rigidbody>();
+        rb = GetComponent<Rigidbody>();
     }
 
-    private void FixedUpdate()
+    void FixedUpdate()
     {
         if (_enabled)
         {
@@ -27,7 +24,14 @@ public class Rotator : MonoBehaviour
 
     public void Rotate()
     {
-        _rotation = new Vector3(0, 0, _rotationSpeed);
-        _rb.AddTorque(_rotation);
+
+        rb.transform.Rotate(new Vector3(0, 0, rotationSpeed) * Time.deltaTime, Space.World);
     }
+
+    public void ModifySpeed(float speed)
+    {
+        rotationSpeed = speed;
+    }
+
+
 }
