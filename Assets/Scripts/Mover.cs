@@ -7,7 +7,7 @@ public class Mover : MonoBehaviour
 {
     private Rigidbody _rb;
     [SerializeField] private float _horizontalForce;
-    [SerializeField] private float _verticalFoce;
+    [SerializeField] private float _verticalForce;
     [SerializeField] private bool _enabled;
 
     private Vector3 _horizontal;
@@ -31,7 +31,7 @@ public class Mover : MonoBehaviour
     public void MoveAbsolute()
     {
         _horizontal = new Vector3(_horizontalForce, 0, 0);
-        _vertical = new Vector3(0, _verticalFoce, 0);
+        _vertical = new Vector3(0, _verticalForce, 0);
 
         _rb.AddForce(_horizontal);
         _rb.AddForce(_vertical);
@@ -40,6 +40,6 @@ public class Mover : MonoBehaviour
     public void Reverse()
     {
         _horizontalForce = -_horizontalForce;
-        _verticalFoce = -_verticalFoce;
+        _verticalForce = -_verticalForce;
     }
 }

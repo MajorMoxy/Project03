@@ -7,10 +7,10 @@ using UnityEngine.Events;
 public class KeySensor : MonoBehaviour
 {
     [SerializeField] private int _keyIndexToSense = 0;
-    [SerializeField] private bool _isPersistant;
+    [SerializeField] private bool _isPersistent;
     public UnityEvent onOneTimeTrigger;
-    public UnityEvent persistantTrigger;
-    public UnityEvent onPersistantStop;
+    public UnityEvent persistentTrigger;
+    public UnityEvent onPersistentStop;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -26,14 +26,14 @@ public class KeySensor : MonoBehaviour
 
     private void OnTriggerStay(Collider other)
     {
-        if (_isPersistant)
+        if (_isPersistent)
         {
             Key keyCheck = other.GetComponent<Key>();
             if (keyCheck != null)
             {
                 if (keyCheck.KeyIndex == _keyIndexToSense)
                 {
-                    persistantTrigger.Invoke();
+                    persistentTrigger.Invoke();
                 }
             }
         }
@@ -41,14 +41,14 @@ public class KeySensor : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (_isPersistant)
+        if (_isPersistent)
         {
             Key keyCheck = other.GetComponent<Key>();
             if (keyCheck != null)
             {
                 if (keyCheck.KeyIndex == _keyIndexToSense)
                 {
-                    onPersistantStop.Invoke();
+                    onPersistentStop.Invoke();
                 }
             }
         }

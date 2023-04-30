@@ -1,1 +1,1 @@
-# SheehanBryce_Project03
+please refer to the "2dot5DrbTools Instructional Doc" found within the project folder for detailed instructions on how to install and use.
